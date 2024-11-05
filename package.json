@@ -1,6 +1,6 @@
 {
-  "name": "github_packages",
-  "version": "1.0.0",
+  "name": "@mattruizmesh/github_packages",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
+  "repository": {
+    "url": "git://github.com/mattruizmesh/github_packages.git"
+  },
   "license": "ISC"
 }
