@@ -38,7 +38,8 @@ jobs:
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
         
-        # - name: Publish package
-        #   run: npm publish
-        #   env:
-        #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: npm install
+          run: npm install
+
+        - name: Publish package
+          run: npm publish
