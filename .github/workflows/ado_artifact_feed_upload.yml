@@ -32,6 +32,12 @@ jobs:
             echo "; end auth token" >> ~/.npmrc
             cat ~/.npmrc
         
+        - name: replace token in .npmrc
+          run: |
+            BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64)
+            sed -i 's/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/' ~/.npmrc
+            cat ~/.npmrc
+        
         # - name: Publish package
         #   run: npm publish
         #   env:
