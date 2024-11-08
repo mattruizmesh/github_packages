@@ -1,20 +1,12 @@
 {
-  "name": "@mattruizmesh/github_packages",
-  "version": "1.0.2",
-  "description": "",
+  "name": "github_packages",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mattruizmesh/github_packages.git"
-  },
   "license": "ISC",
-  "dependencies": {
-    "@mattruizmesh/github_packages": "^1.0.2"
-  }
+  "description": ""
 }

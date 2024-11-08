@@ -1,0 +1,37 @@
+name: Publish npm Package
+
+on:
+    push:
+        branches:
+            - ado_artifact_feed_upload
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        environment: ado_artifact_feed
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20.x'
+
+        - name: setup user .npmrc
+          run: |
+            echo "; begin auth token" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:username=meshsystems" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc"
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:email=matt.ruiz@meshsystems.com" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:username=meshsystems" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:email=matt.ruiz@meshsystems.com" >> ~/.npmrc
+            echo "; end auth token" >> ~/.npmrc
+            cat ~/.npmrc
+        
+        # - name: Publish package
+        #   run: npm publish
+        #   env:
+        #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
