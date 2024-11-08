@@ -24,7 +24,7 @@ jobs:
           run: |
             echo "; begin auth token" >> ~/.npmrc
             echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:username=meshsystems" >> ~/.npmrc
-            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc"
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc
             echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:email=matt.ruiz@meshsystems.com" >> ~/.npmrc
             echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:username=meshsystems" >> ~/.npmrc
             echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc
