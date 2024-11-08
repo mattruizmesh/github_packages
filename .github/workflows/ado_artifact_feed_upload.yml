@@ -1,6 +1,7 @@
 name: Publish npm Package to ado artifact feed
 
 on:
+    pull_request:
     push:
         branches:
             - ado_artifact_feed_upload
