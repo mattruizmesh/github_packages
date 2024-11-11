@@ -1,7 +1,6 @@
 name: Publish package-1 to ADO
 
 on:
-    pull_request:
     push:
         branches:
             - ado_artifact_feed_upload
