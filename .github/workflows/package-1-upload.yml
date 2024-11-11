@@ -1,4 +1,4 @@
-name: Publish package-1 to ADO
+name: Publish packages to ADO
 
 on:
     push:
@@ -6,6 +6,7 @@ on:
             - ado_artifact_feed
         paths:
             - 'packages/package-1/**'
+            - 'packages/package-2/**'
     workflow_dispatch:
 
 jobs:
@@ -38,6 +39,12 @@ jobs:
             BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64)
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
+
+        - name: check git diff for package-1 and package-2
+          run: |
+            git diff --name-only HEAD^ HEAD
+            git diff --name-only HEAD^ HEAD | grep "packages/package-1"
+            git diff --name-only HEAD^ HEAD | grep "packages/package-2"
 
         - name: Publish package-1
           working-directory: packages/package-1
