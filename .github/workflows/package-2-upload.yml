@@ -3,7 +3,7 @@ name: Publish package-2 to ADO
 on:
     push:
         branches:
-            - ado_artifact_feed_upload
+            - ado_artifact_feed
         paths:
             - 'packages/package-2/**'
     workflow_dispatch:
