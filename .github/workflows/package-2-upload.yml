@@ -1,10 +1,12 @@
-name: Publish npm Package to ado artifact feed
+name: Publish package-2 to ADO
 
 on:
     pull_request:
     push:
         branches:
             - ado_artifact_feed_upload
+        paths:
+            - 'packages/package-2/**'
     workflow_dispatch:
 
 jobs:
@@ -37,10 +39,6 @@ jobs:
             BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64)
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
-
-        - name: Publish package-1
-          working-directory: packages/package-1
-          run: npm publish
 
         - name: Publish package-2
           working-directory: packages/package-2
