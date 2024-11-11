@@ -61,8 +61,9 @@ jobs:
           run: |
             for dir in packages/*/; do
               package_name=$(basename "$dir")
-              if [ "${{ env.steps.${package_name}_CHANGED }}" == "true" ]; then
+              if [ "${package_name}_CHANGED" = "true" ]; then
                 echo "Publishing $package_name"
-                (cd "$dir" && npm publish)
+                npm publish --prefix $dir
+              else
+                echo "No changes detected in $package_name"
               fi
-            done
