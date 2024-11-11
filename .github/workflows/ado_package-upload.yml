@@ -42,19 +42,19 @@ jobs:
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
 
-        - name: check git diff for package-1 and package-2
+        - name: check git diff for packages
           id: git_diff_check
           run: |
-            if git diff --name-only HEAD^ HEAD | grep -q "packages/package-1"; then
-              echo "PACKAGE_1_CHANGED=true" >> $GITHUB_ENV
-            else
-              echo "PACKAGE_1_CHANGED=false" >> $GITHUB_ENV
-            fi
-            if git diff --name-only HEAD^ HEAD | grep -q "packages/package-2"; then
-              echo "PACKAGE_2_CHANGED=true" >> $GITHUB_ENV
-            else
-              echo "PACKAGE_2_CHANGED=false" >> $GITHUB_ENV
-            fi
+            for dir in packages/*/; do
+              package_name=$(basename "$dir")
+              if git diff --name-only HEAD^ HEAD | grep -q "$dir"; then
+                echo "${package_name}_CHANGED=true" >> $GITHUB_ENV
+                echo "Changes detected in $package_name"
+              else
+                echo "${package_name}_CHANGED=false" >> $GITHUB_ENV
+                echo "No changes detected in $package_name"
+              fi
+            done
 
         - name: Publish package-1
           if: env.PACKAGE_1_CHANGED == 'true'
