@@ -41,5 +41,10 @@ jobs:
         - name: npm install
           run: npm install
 
-        - name: Publish package
+        - name: Publish package-1
+          working-directory: packages/package-1
+          run: npm publish
+
+        - name: Publish package-2
+          working-directory: packages/package-2
           run: npm publish
