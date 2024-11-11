@@ -56,12 +56,12 @@ jobs:
               fi
             done
 
-        - name: Publish package-1
-          if: env.PACKAGE_1_CHANGED == 'true'
-          working-directory: packages/package-1
-          run: npm publish
-
-        - name: Publish package-2
-          if: env.PACKAGE_2_CHANGED == 'true'
-          working-directory: packages/package-2
-          run: npm publish
+        - name: Publish packages
+          run: |
+            for dir in packages/*/; do
+              package_name=$(basename "$dir")
+              if [ "${{ env.${package_name}_CHANGED }}" == "true" ]; then
+                echo "Publishing $package_name"
+                (cd "$dir" && npm publish)
+              fi
+            done
