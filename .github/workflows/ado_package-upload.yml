@@ -57,14 +57,12 @@ jobs:
               fi
             done
 
-        - name: Publish packages
-          run: |
-            for dir in packages/*/; do
-              package_name=$(basename "$dir")
-              if [ "${package_name}_CHANGED" = "true" ]; then
-                echo "Publishing $package_name"
-                npm publish --prefix $dir
-              else
-                echo "No changes detected in $package_name"
-              fi
-            done
+        - name: Publish package-1
+          if: env.package-1_CHANGED == 'true'
+          working-directory: packages/package-1
+          run: npm publish
+
+        - name: Publish package-2
+          if: env.package-2_CHANGED == 'true'
+          working-directory: packages/package-2
+          run: npm publish
