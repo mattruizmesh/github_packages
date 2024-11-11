@@ -67,3 +67,4 @@ jobs:
               else
                 echo "No changes detected in $package_name"
               fi
+            done
