@@ -6,11 +6,11 @@ on:
         package-1:
           type: boolean
           description: 'Publish package-1'
-          default: false
+          required: true
         package-2:
           type: boolean
           description: 'Publish package-2'
-          default: false
+          required: true
 
 jobs:
     build:
