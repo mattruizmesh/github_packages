@@ -47,7 +47,10 @@ jobs:
             for package in $(echo ${{ github.event.inputs.packages }} | tr "," "\n")
             do
               echo "Publishing $package"
+              pwd
               cd $package
+              pwd
               npm publish packages/$package
               cd ..
+              pwd
             done
