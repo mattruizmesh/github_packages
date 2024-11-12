@@ -1,13 +1,12 @@
-name: Publish package-1 to ADO
+name: Publish packages to ADO Manual Trigger
 
 on:
-    pull_request:
-    push:
-        branches:
-            - ado_artifact_feed_upload
-        paths:
-            - 'packages/package-1/**'
     workflow_dispatch:
+      inputs:
+        packages:
+          type: string
+          description: 'Comma separated list of packages to publish'
+          default: 'package-1,package-2'
 
 jobs:
     build:
@@ -16,6 +15,8 @@ jobs:
         steps:
         - name: Checkout repository
           uses: actions/checkout@v2
+          with:
+            fetch-depth: 0  # Fetch all history for all branches and tags
 
         - name: Set up Node.js
           uses: actions/setup-node@v4
@@ -40,6 +41,10 @@ jobs:
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
 
-        - name: Publish package-1
-          working-directory: packages/package-1
-          run: npm publish
+        - name: Publish packages
+          run: |
+            for package in $(echo ${{ github.event.inputs.packages }} | tr "," "\n")
+            do
+              echo "Publishing $package"
+              npm publish packages/$package
+            done
