@@ -1,12 +1,16 @@
-name: Publish packages to ADO Manual Trigger String Input
+name: Publish packages to ADO Manual Trigger Boolean Input
 
 on:
     workflow_dispatch:
       inputs:
-        packages:
-          type: string
-          description: 'Comma separated list of packages to publish'
-          default: 'package-1,package-2'
+        package-1:
+          type: boolean
+          description: 'Publish package-1'
+          default: false
+        package-2:
+          type: boolean
+          description: 'Publish package-2'
+          default: false
 
 jobs:
     build:
@@ -41,13 +45,12 @@ jobs:
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
 
-        - name: Publish packages
-          working-directory: packages
-          run: |
-            for package in $(echo ${{ github.event.inputs.packages }} | tr "," "\n")
-            do
-              echo "Publishing $package"
-              cd $package
-              npm publish
-              cd ..
-            done
+        - name: Publish package-1
+          if: ${{ github.event.inputs.package-1 }}
+          working-directory: packages/package-1
+          run: npm publish
+
+        - name: Publish package-2
+          if: ${{ github.event.inputs.package-2 }}
+          working-directory: packages/package-2
+          run: npm publish
