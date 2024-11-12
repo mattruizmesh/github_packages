@@ -1,4 +1,4 @@
-name: Publish packages to ADO
+name: Publish packages to ADO Manual Trigger
 
 on:
     workflow_dispatch:
