@@ -46,11 +46,11 @@ jobs:
             cat ~/.npmrc
 
         - name: Publish package-1
-          if: ${{ github.event.inputs.package-1 }}
+          if: ${{ github.event.inputs.package-1 == 'true' }}
           working-directory: packages/package-1
           run: npm publish
 
         - name: Publish package-2
-          if: ${{ github.event.inputs.package-2 }}
+          if: ${{ github.event.inputs.package-2 == 'true' }}
           working-directory: packages/package-2
           run: npm publish
