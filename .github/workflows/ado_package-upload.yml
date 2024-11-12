@@ -1,13 +1,12 @@
 name: Publish packages to ADO
 
 on:
-    push:
-        branches:
-            - ado_artifact_feed
-        paths:
-            - 'packages/package-1/**'
-            - 'packages/package-2/**'
     workflow_dispatch:
+      inputs:
+        packages:
+          type: string
+          description: 'Comma separated list of packages to publish'
+          default: 'package-1,package-2'
 
 jobs:
     build:
@@ -42,27 +41,10 @@ jobs:
             sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
             cat ~/.npmrc
 
-        - name: check git diff for packages
-          id: git_diff_check
+        - name: Publish packages
           run: |
-            for dir in packages/*/; do
-              package_name=$(basename "$dir")
-              if git diff --name-only HEAD^ HEAD | grep -q "$dir"; then
-                echo "${package_name}_CHANGED=true" >> $GITHUB_ENV
-                echo "Changes detected in $package_name"
-                echo "Github Env var name: ${package_name}_CHANGED"
-              else
-                echo "${package_name}_CHANGED=false" >> $GITHUB_ENV
-                echo "No changes detected in $package_name"
-              fi
+            for package in $(echo ${{ github.event.inputs.packages }} | tr "," "\n")
+            do
+              echo "Publishing $package"
+              npm publish packages/$package
             done
-
-        - name: publish package-1
-          if: env.package-1_CHANGED == 'true'
-          working-directory: packages/package-1
-          run: npm publish
-
-        - name: publish package-2
-          if: env.package-2_CHANGED == 'true'
-          working-directory: packages/package-2
-          run: npm publish
