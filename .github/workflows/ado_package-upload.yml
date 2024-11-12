@@ -1,0 +1,53 @@
+name: Publish packages to ADO Manual Trigger
+
+on:
+    workflow_dispatch:
+      inputs:
+        packages:
+          type: string
+          description: 'Comma separated list of packages to publish'
+          default: 'package-1,package-2'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        environment: ado_artifact_feed
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0  # Fetch all history for all branches and tags
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20.x'
+
+        - name: setup user .npmrc
+          run: |
+            echo "; begin auth token" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:username=meshsystems" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/registry/:email=matt.ruiz@meshsystems.com" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:username=meshsystems" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:_password=[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]" >> ~/.npmrc
+            echo "//pkgs.dev.azure.com/meshsystems/906251ef-583e-4dec-a809-f74c118f3cca/_packaging/Spirax.Demo/npm/:email=matt.ruiz@meshsystems.com" >> ~/.npmrc
+            echo "; end auth token" >> ~/.npmrc
+            cat ~/.npmrc
+        
+        - name: replace token in .npmrc
+          run: |
+            BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64)
+            sed -i "s/\[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN\]/$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN/g" ~/.npmrc
+            cat ~/.npmrc
+
+        - name: Publish packages
+          working-directory: packages
+          run: |
+            for package in $(echo ${{ github.event.inputs.packages }} | tr "," "\n")
+            do
+              echo "Publishing $package"
+              cd $package
+              npm publish packages/$package
+              cd ..
+            done
