@@ -1,12 +1,6 @@
 name: Publish package-2 to ADO
 
 on:
-    pull_request:
-    push:
-        branches:
-            - ado_artifact_feed_upload
-        paths:
-            - 'packages/package-2/**'
     workflow_dispatch:
 
 jobs:
