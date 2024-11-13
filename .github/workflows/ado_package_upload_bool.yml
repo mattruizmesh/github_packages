@@ -41,7 +41,7 @@ jobs:
         
         - name: replace token in .npmrc
           run: |
-            BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64)
+            BASE64_ENCODED_PERSONAL_ACCESS_TOKEN=$(echo -n ${{ secrets.ADO_PAT }} | base64 -w 0)
             sed -i s/base64AccessToken/"$BASE64_ENCODED_PERSONAL_ACCESS_TOKEN"/g ~/.npmrc
             cat ~/.npmrc
 
