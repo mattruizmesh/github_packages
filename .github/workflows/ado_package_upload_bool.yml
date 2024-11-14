@@ -53,4 +53,4 @@ jobs:
         - name: Publish package-2
           if: ${{ github.event.inputs.package-2 == 'true' }} 
           working-directory: packages/package-2
-          run: npm publish --access public
+          run: npm publish --access restricted
